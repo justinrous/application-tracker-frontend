@@ -1,0 +1,31 @@
+
+Portfolio Tracker
+
+Core Features
+- Folders/Categories for types of jobs
+- Each Job Entry
+    - Company Name
+    - Position Title
+    - Date Applied
+    - PDF Resume
+    - Status
+- Sign in / Sign out (via Google Email )
+
+Additional Features
+- Smarter Organization
+    - Status Tracking
+    - Tags/Labels (Remote, onsite, contract)
+    = Notes Section (Interview feedback, followup reminders)
+- Analytics
+    - Numbe of jobs applied to over time
+    - Offer rate / interview rate
+    - Applications by category or company type
+- Notifications
+- Sharing/Exporting
+    - Export as CSV or PDF
+
+Technologies Used
+
+- Tailwind CSS
+- TypeScript
+-
