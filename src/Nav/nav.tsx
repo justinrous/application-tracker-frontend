@@ -13,6 +13,10 @@ function Nav(): JSX.Element {
     // const [loggedIn, setLoggedIn] = useState<boolean>(false);
     const [imgClassState, setImgClass] = useState<string>(imgClass);
 
+    function handleNavLoad(): void {
+        setImgClass(imgClassState => imgClassState === imgClass ? imgClass2 : imgClass);
+    }
+
     useEffect(() => {
         // Simulate a login check
         const interval: number = setInterval(() => {
@@ -21,17 +25,13 @@ function Nav(): JSX.Element {
             });
         }, 2000);
 
-
         return () => clearTimeout(interval);
     }, []);
 
     return (
-        <nav className={navClass} >
+        <nav className={navClass} onLoad={handleNavLoad} >
             <img src="src\assets\resume_image_1.jpg" alt="appImage" width={150} height={150} className={imgClassState} />
             <ul className="flex justify-evenly min-w-50">
-                <A URL="/" name="Home" />
-                <A URL="/about" name="About" />
-                <A URL="/contact" name="Contact" />
             </ul>
         </nav>
     );
