@@ -1,7 +1,8 @@
 // import { useState } from 'react'
 // import './App.css'
 import Nav from '../Nav/nav.tsx';
-import Form from '../Form/Form.tsx';
+// import CategoryBtn from '../CategoryBtn/CategoryBtn.tsx';
+import CategorySection from '../CategorySection/CategorySection.tsx';
 
 const mainClassName = 'min-h-screen bg-gray-100 p-4';
 const sectionClassName = 'flex justify-center flex-col items-center';
@@ -18,8 +19,8 @@ function App() {
         <section className={sectionClassName}>
           <h1 className={h1ClassName}>Welcome to the Application Tracker!</h1>
           <p className={pClassName}>Keep track of your job applications by adding a new application below</p>
-          <Form />
         </section>
+        <CategorySection />
       </main>
     </>
   )
