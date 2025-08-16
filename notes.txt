@@ -1,6 +1,12 @@
 
 Portfolio Tracker
 
+To-Do:
+- Write Unit Tests
+- Implement CRUD
+- Connect MongoDB Database
+- Login and Authenticate Feature
+
 Core Features
 - Folders/Categories for types of jobs
 - Each Job Entry
@@ -10,6 +16,8 @@ Core Features
     - PDF Resume
     - Status
 - Sign in / Sign out (via Google Email )
+    - Authentication
+    - Login Routes
 
 Additional Features
 - Smarter Organization

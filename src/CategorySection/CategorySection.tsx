@@ -31,8 +31,11 @@ type showApplicationFormType = {
 /****************************************************************************
 ***********             Tailwind CSS classes            **********************
 * ****************************************************************************/
-const categoryItemClass: string = "bg-amber-200 p-4 rounded shadow mb-2 min-w-200 m-auto text-center";
+const categorySectionClass: string = "flex justify-center flex-col items-center";
+const categoryItemClass: string = "bg-purple-200 p-4 rounded shadow mb-2 mt-3 min-w-200 m-auto text-center";
 const categoryDivClass: string = "flex justify-between items-center";
+const applicationBtnClass: string = "bg-purple-500 text-white px-2 py-1 rounded hover:bg-purple-600 transition-colors duration-300";
+const h2InputClass: string = "border-none text-xl font-bold text-purple-600 rounded px-2 py-2 w-full focus:outline-none transition-colors duration-300";
 
 
 
@@ -84,13 +87,13 @@ function CategorySection() {
     }
 
     return (
-        <section className="flex justify-center flex-col items-center">
+        <section className={categorySectionClass}>
             <CategoryBtn handleBtnClick={handleCategoryBtnClick} />
             {categories.map((category: Category) => (
                 <div key={category.id} className={categoryItemClass}>
                     <div className={categoryDivClass}>
-                        <h2><input type="text" placeholder="Category Name" name={category.name} value={category.name} onChange={e => handleInputCategoryChange(e, category.id)}></input></h2>
-                        <button onClick={e => handleApplicationBtnClick(e, category.id, category.name)}>+ Add New Application</button>
+                        <h2><input type="text" placeholder="Category Name" className={h2InputClass} name={category.name} value={category.name} onChange={e => handleInputCategoryChange(e, category.id)}></input></h2>
+                        <button className={applicationBtnClass} onClick={e => handleApplicationBtnClick(e, category.id, category.name)}>+ Add New Application</button>
                     </div>
                     <div>
                         {showApplicationForm.filter(form => form.show && form.categoryId === category.id).map((form, index) => (

@@ -4,16 +4,17 @@ import Nav from '../Nav/nav.tsx';
 // import CategoryBtn from '../CategoryBtn/CategoryBtn.tsx';
 import CategorySection from '../CategorySection/CategorySection.tsx';
 
-const mainClassName = 'min-h-screen bg-gray-100 p-4';
+const AppContainerClass = "bg-linear-to-bl from-violet-600 to-violet-800"
+const mainClassName = 'min-h-screen p-4';
 const sectionClassName = 'flex justify-center flex-col items-center';
-const h1ClassName = 'text-2xl font-bold mb-4';
-const pClassName = 'text-lg mb-6';
+const h1ClassName = 'text-2xl font-bold mb-4 text-purple-200';
+const pClassName = 'text-lg mb-6 text-purple-100';
 
 function App() {
   // const [count, setCount] = useState(0)
 
   return (
-    <>
+    <div className={AppContainerClass}>
       <Nav />
       <main className={mainClassName}>
         <section className={sectionClassName}>
@@ -22,7 +23,7 @@ function App() {
         </section>
         <CategorySection />
       </main>
-    </>
+    </div>
   )
 }
 

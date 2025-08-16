@@ -3,9 +3,9 @@ import type { JSX } from "react";
 import { useEffect, useState } from 'react';
 import A from '../A/A.tsx';
 
-let navClass: string = "flex justify-between bg-teal-500 min-h-25 items-center";
-let imgClass: string = "rounded-full p5 rotate-30 transition-transform ease-in-out duration-2000";
-let imgClass2: string = "rounded-full p5 -rotate-30 transition-transform ease-in-out duration-2000";
+const navClass: string = "flex justify-between min-h-25 items-center";
+const imgClass: string = "rounded-full p5 rotate-30 transition-transform ease-in-out duration-2000";
+const imgClass2: string = "rounded-full p5 -rotate-30 transition-transform ease-in-out duration-2000";
 
 function Nav(): JSX.Element {
 
