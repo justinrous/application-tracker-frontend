@@ -1,11 +1,12 @@
 
 import type { JSX } from "react";
 import { useEffect, useState } from 'react';
-import A from '../A/A.tsx';
+import { NavLink } from "react-router";
 
 const navClass: string = "flex justify-between min-h-25 items-center";
 const imgClass: string = "rounded-full p5 rotate-30 transition-transform ease-in-out duration-2000";
 const imgClass2: string = "rounded-full p5 -rotate-30 transition-transform ease-in-out duration-2000";
+const navLinkClass: string = "text-white-500 hover:text-blue-700";
 
 function Nav(): JSX.Element {
 
@@ -32,6 +33,7 @@ function Nav(): JSX.Element {
         <nav className={navClass} onLoad={handleNavLoad} >
             <img src="src\assets\resume_image_1.jpg" alt="appImage" width={150} height={150} className={imgClassState} />
             <ul className="flex justify-evenly min-w-50">
+                <li><NavLink to="/login" className={navLinkClass}>Login</NavLink></li>
             </ul>
         </nav>
     );
