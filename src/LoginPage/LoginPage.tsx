@@ -28,17 +28,19 @@ function LoginPage() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className={formClass}>
-            <div className="divClass">
-                <label htmlFor="username">Username: </label>
-                <input type="text" id="username" name="username" value={username} placeholder="username" onChange={handleFormChange} required />
-            </div>
-            <div className={divClass}>
-                <label htmlFor="password">Password: </label>
-                <input type="password" id="password" name="password" value={password} placeholder="password" onChange={handleFormChange} required />
-            </div>
-            <button type="submit" className={btnClass}>Login</button>
-        </form>
+        <section>
+            <form onSubmit={handleSubmit} className={formClass}>
+                <div className="divClass">
+                    <label htmlFor="username">Username: </label>
+                    <input type="text" id="username" name="username" value={username} placeholder="username" onChange={handleFormChange} required />
+                </div>
+                <div className={divClass}>
+                    <label htmlFor="password">Password: </label>
+                    <input type="password" id="password" name="password" value={password} placeholder="password" onChange={handleFormChange} required />
+                </div>
+                <button type="submit" className={btnClass}>Login</button>
+            </form>
+        </section>
     )
 }
 
