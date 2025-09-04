@@ -2,6 +2,11 @@
 import type { JSX } from 'react';
 import { useState } from 'react';
 
+
+/****************************************************************************
+ * **************              Type Definitions        ************************
+ * ****************************************************************************/
+
 type Application = {
     jobTitle: string;
     companyName: string;
@@ -15,6 +20,18 @@ type ApplicationFormProps = {
     categoryName: string;
 };
 
+/****************************************************************************
+ * **************              CSS Classes          ************************
+ * ****************************************************************************/
+// Input['text']
+// Input['date']
+// Select styles
+// Button Styles
+
+
+
+
+// Initial form data
 const initialFormData: Application = {
     jobTitle: '',
     companyName: '',
@@ -23,6 +40,10 @@ const initialFormData: Application = {
     categoryName: ""
 }
 
+
+/****************************************************************************
+ * **************              Component             ************************
+ * ****************************************************************************/
 function ApplicationForm({ handleSubmit, categoryName }: ApplicationFormProps): JSX.Element {
 
     const [formData, setFormData] = useState(initialFormData);
