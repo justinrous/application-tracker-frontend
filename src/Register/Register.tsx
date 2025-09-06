@@ -4,10 +4,20 @@ import { useNavigate } from "react-router";
 /******************************************************************************************
  ********************   Tailwaind CSS Classes   *******************************************
  ******************************************************************************************/
-let sectionClass: string = "flex flex-col items-center justify-top min-h-screen min-w-2xl";
-let formClass: string = "flex flex-col items-center items-center";
-let divClass: string = "flex flex-row bg-purpleLight4 p-2 rounded shadow-md w-80 min-w-100 mb-4";
-let btnClass: string = "bg-purpleLight4 text-purpleDark4 px-4 py-2 rounded hover:bg-blue-600";
+const sectionClass: string = "flex flex-col items-center justify-top min-h-screen min-w-2xl";
+const formClass: string = "flex flex-col items-center items-center";
+const divClass: string = "flex flex-row bg-purpleLight4 p-2 rounded shadow-md w-80 min-w-100 mb-4";
+const btnClass: string = "bg-purpleLight4 text-purpleDark4 px-4 py-2 rounded hover:bg-blue-600";
+
+
+/****************************************************************************
+ *  Type Definitions
+ **************************************************************************/
+type postBody = {
+    method: string,
+    headers: { 'Content-Type': string },
+    body: string
+}
 
 
 /************** Component **********************************/
@@ -17,7 +27,7 @@ export default function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const charLength = password.length >= 8;
+    // const charLength = password.length >= 8;
 
     function handleFormChange(e: React.ChangeEvent<HTMLInputElement>): void {
         const { name, value } = e.target;
@@ -28,11 +38,25 @@ export default function Register() {
         }
     }
 
-    function submitForm(e: React.FormEvent<HTMLFormElement>): void {
+    async function submitForm(e: React.FormEvent<HTMLFormElement>): Promise<void> {
         e.preventDefault();
         console.log("Username:", username, "Password:", password);
 
         // Add registration logic here (e.g., API call)
+        const fetchURL: string = 'http://localhost:3005/api/users/register';
+        const requestOptions: postBody = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        };
+        fetch(fetchURL, requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
 
         // Clear form fields after submission
 
@@ -49,7 +73,6 @@ export default function Register() {
                     <input type="text" id="username" name="username" value={username} onChange={handleFormChange} />
                 </div>
                 <div className={divClass}>
-                    <p>{charLength ? "Y" : "X"}</p>
                     <label htmlFor="password">Create Password: </label>
                     <input type="password" id="password" name="password" value={password} onChange={handleFormChange} />
                 </div>

@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { Link } from "react-router";
 
 /******************************************************************************************
  ********************   Tailwaind CSS Classes   *******************************************
  ******************************************************************************************/
-
-const formClass: string = "flex flex-col items-center justify-center min-h-screen bg-gray-100";
-const divClass: string = "bg-white p-6 rounded shadow-md w-80";
+const sectionClass: string = "flex flex-col items-center justify-start min-h-screen";
+const formClass: string = "flex flex-col items-center justify-start";
+const divClass: string = "bg-white m-2 p-6 rounded shadow-md w-80";
 const btnClass: string = "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600";
 
 function LoginPage() {
@@ -28,9 +29,9 @@ function LoginPage() {
     }
 
     return (
-        <section>
+        <section className={sectionClass}>
             <form onSubmit={handleSubmit} className={formClass}>
-                <div className="divClass">
+                <div className={divClass}>
                     <label htmlFor="username">Username: </label>
                     <input type="text" id="username" name="username" value={username} placeholder="username" onChange={handleFormChange} required />
                 </div>
@@ -40,6 +41,7 @@ function LoginPage() {
                 </div>
                 <button type="submit" className={btnClass}>Login</button>
             </form>
+            <p>Dont have an account? <Link to="/register" className="text-white">Register Here</Link></p>
         </section>
     )
 }
