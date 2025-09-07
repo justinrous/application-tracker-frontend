@@ -13,7 +13,7 @@ const btnClass: string = "bg-purpleLight4 text-purpleDark4 px-4 py-2 rounded hov
 /****************************************************************************
  *  Type Definitions
  **************************************************************************/
-type postBody = {
+type requestOptionsType = {
     method: string,
     headers: { 'Content-Type': string },
     body: string
@@ -44,7 +44,7 @@ export default function Register() {
 
         // Add registration logic here (e.g., API call)
         const fetchURL: string = 'http://localhost:3005/api/users/register';
-        const requestOptions: postBody = {
+        const requestOptions: requestOptionsType = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })
