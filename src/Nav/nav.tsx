@@ -8,7 +8,15 @@ const imgClass: string = "cursor-pointer rounded-full p5 rotate-30 transition-tr
 const imgClass2: string = "cursor-pointer rounded-full p5 -rotate-30 transition-transform ease-in-out duration-2000";
 const navLinkClass: string = "text-2xl text-white hover:text-blue-700";
 
-function Nav(): JSX.Element {
+
+/****************************************************************************
+ * Prop Types
+ * *************************************************************************/
+type NavProps = {
+    loginStatus?: boolean
+}
+
+function Nav({ loginStatus }: NavProps): JSX.Element {
 
     // Potentially setup state or props here in the future
     // const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -38,7 +46,10 @@ function Nav(): JSX.Element {
         <nav className={navClass} onLoad={handleNavLoad} >
             <img src="src\assets\resume_image_1.jpg" alt="appImage" width={150} height={150} className={imgClassState} onClick={navigateHome} />
             <ul className="flex justify-evenly min-w-50">
-                <li><NavLink to="/login" className={navLinkClass}>Login</NavLink></li>
+                {loginStatus ?
+                    <li><NavLink to="/" className={navLinkClass}>Dashboard</NavLink></li> :
+                    <li><NavLink to="/login" className={navLinkClass}>Login</NavLink></li>
+                }
             </ul>
         </nav>
     );

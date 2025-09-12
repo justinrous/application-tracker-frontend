@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { useNavigate } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
 
 /******************************************************************************************
  ********************   Tailwaind CSS Classes   *******************************************
@@ -27,6 +27,7 @@ function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const [loginStatus, setLoginStatus] = useOutletContext<[loginStatus: boolean, setLoginStatus: React.Dispatch<React.SetStateAction<boolean>>]>();
 
     function handleFormChange(e: React.ChangeEvent<HTMLInputElement>): void {
         const { name, value } = e.target;
@@ -54,6 +55,7 @@ function LoginPage() {
             .then(response => {
                 if (response.status === 200) {
                     console.log('Login successful');
+                    setLoginStatus(true);
                     navigate('/');
                     // Redirect to dashboard or another page
 
