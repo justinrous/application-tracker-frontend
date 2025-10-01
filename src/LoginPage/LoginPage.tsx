@@ -17,6 +17,7 @@ const btnClass: string = "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue
  **************************************************************************/
 type requestOptionsType = {
     method: string,
+    credentials: string,
     headers: { 'Content-Type': string },
     body: string
 }
@@ -47,6 +48,7 @@ function LoginPage() {
         const fetchURL: string = 'http://localhost:3005/api/users/login';
         const requestOptions: requestOptionsType = {
             method: 'POST',
+            credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })
         };

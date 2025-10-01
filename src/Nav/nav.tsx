@@ -19,16 +19,15 @@ type NavProps = {
 function Nav({ loginStatus }: NavProps): JSX.Element {
 
     // Potentially setup state or props here in the future
-    // const [loggedIn, setLoggedIn] = useState<boolean>(false);
     const [imgClassState, setImgClass] = useState<string>(imgClass);
     const navigate = useNavigate();
 
-    function handleNavLoad(): void {
-        setImgClass(imgClassState => imgClassState === imgClass ? imgClass2 : imgClass);
-    }
-
     function navigateHome(): void {
         navigate('/');
+    }
+
+    function handleNavLoad(): void {
+        setImgClass(imgClassState => imgClassState === imgClass ? imgClass2 : imgClass);
     }
 
     useEffect(() => {
@@ -40,7 +39,7 @@ function Nav({ loginStatus }: NavProps): JSX.Element {
         }, 2000);
 
         return () => clearTimeout(interval);
-    }, []);
+    }, [])
 
     return (
         <nav className={navClass} onLoad={handleNavLoad} >

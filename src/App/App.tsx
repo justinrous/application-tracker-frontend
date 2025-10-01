@@ -4,6 +4,8 @@ import Nav from '../Nav/nav.tsx';
 // import CategoryBtn from '../CategoryBtn/CategoryBtn.tsx';
 import CategorySection from '../CategorySection/CategorySection.tsx';
 import type { JSX } from "react";
+import { useOutletContext } from 'react-router';
+import { use, useEffect } from 'react';
 
 const mainClassName = 'min-h-screen p-4';
 const sectionClassName = 'flex justify-center flex-col items-center';
@@ -12,6 +14,12 @@ const pClassName = 'text-lg mb-6 text-purple-100';
 
 function App(): JSX.Element {
   // const [count, setCount] = useState(0)
+  const [loginStatus, setLoginStatus] = useOutletContext<[loginStatus: boolean, setLoginStatus: React.Dispatch<React.SetStateAction<boolean>>]>();
+
+  // Write code to fetch applications from backend here and set state
+  useEffect(() => {
+    console.log("App Component - Login Status:", loginStatus);
+  });
 
   return (
     <main className={mainClassName}>
@@ -19,7 +27,9 @@ function App(): JSX.Element {
         <h1 className={h1ClassName}>Welcome to the Application Tracker!</h1>
         <p className={pClassName}>Keep track of your job applications by adding a new application below</p>
       </section>
-      <CategorySection />
+      {
+        loginStatus ? <CategorySection loginStatus={loginStatus} /> : <p className='text-red-500 text-center mb-4'>Please log in to access the dashboard.</p>
+      }
     </main>
   )
 }
