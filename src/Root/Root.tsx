@@ -18,7 +18,7 @@ function Root(): JSX.Element {
 
     return (
         <div className={AppContainerClass}>
-            <Nav loginStatus={loginStatus} />
+            <Nav loginStatus={loginStatus} setLoginStatus={setLoginStatus} />
             <Outlet context={[loginStatus, setLoginStatus]} />
         </div>
     );
