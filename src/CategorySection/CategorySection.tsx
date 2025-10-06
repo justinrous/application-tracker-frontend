@@ -177,7 +177,7 @@ function CategorySection({ loginStatus }: CategorySectionProps): JSX.Element {
                         ))}
                         {applications.filter(app => app.categoryName === category.name).map((app, index) => (
                             <div key={index}>
-                                <p>{app.jobTitle} at {app.companyName} - {app.status} on {app.applicationDate}</p>
+                                <p>{app.jobTitle} - {app.companyName} - {app.status} on {app.applicationDate}</p>
                             </div>
                         ))}
                     </div>
