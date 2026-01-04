@@ -1,13 +1,14 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import CategoryBtn from "../CategoryBtn/CategoryBtn.tsx";
 import { v4 as uuidv4 } from 'uuid';
 import ApplicationForm from "../ApplicationForm/ApplicationForm.tsx";
 import type { JSX } from "react";
+import { data } from "react-router";
 
 // Constants and Types
 
-const dashboardUrl: string = 'http://localhost:3005/api/dashboard';
+const backendUrl: string = 'http://localhost:3005/api';
 
 type Category = {
     name: string;
@@ -23,6 +24,7 @@ type Application = {
     applicationDate: string;
     status: string;
     categoryName: string;
+    categoryFrontendId: string;
     userId?: string; // Optional, only if the application has been saved to the backend
 };
 
@@ -45,7 +47,8 @@ const categoryItemClass: string = "bg-purple-200 p-4 rounded shadow mb-2 mt-3 mi
 const categoryDivClass: string = "flex justify-between items-center";
 const applicationBtnClass: string = "bg-purple-500 text-white px-2 py-1 rounded hover:bg-purple-600 transition-colors duration-300";
 const h2InputClass: string = "border-none text-xl font-bold text-purple-600 rounded px-2 py-2 w-full focus:outline-none transition-colors duration-300";
-
+const ApplicationContainerClass: string = "flex justify-between items-center bg-purple-100 p-2 rounded mb-2 mt-2";
+const DeleteBtn: string = "bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition-colors duration-300";
 
 
 /****************************************************************************
@@ -58,14 +61,21 @@ function CategorySection({ loginStatus }: CategorySectionProps): JSX.Element {
     const [categories, setCategories] = useState<Category[]>([]);
     const [applications, setApplications] = useState<Application[]>([]);
     const [showApplicationForm, setShowApplicationForm] = useState<showApplicationFormType[]>([]);
+    const timeoutRef = useRef<number | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         console.log("CategorySection Mounted");
+        setLoading(true);
+        setError(null);
+        const dashboardUrl: string = backendUrl + '/dashboard';
         const optionsObj: RequestInit = {
             method: 'GET',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' }
         };
+
         fetch(dashboardUrl, optionsObj)
             .then(response => {
                 if (response.ok) {
@@ -91,10 +101,13 @@ function CategorySection({ loginStatus }: CategorySectionProps): JSX.Element {
                     setCategories([]);
                 }
                 // Extract unique categories from applications
-
+            })
+            .finally(() => {
+                setLoading(false);
             })
             .catch((error) => {
                 console.error('Error fetching categories:', error);
+                setError(error.message);
             });
     }, []);
 
@@ -110,6 +123,51 @@ function CategorySection({ loginStatus }: CategorySectionProps): JSX.Element {
         setCategories(prevCategories => {
             return prevCategories.map(category => category.frontendId === id ? { ...category, name: e.target.value } : category);
         })
+
+        const delay: number = 500; // milliseconds
+        const httpUpdateCategoryUrl: string = backendUrl + '/category/' + id;
+        const httpUpdateCategoryBody: RequestInit = {
+            method: "PUT",
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name: e.target.value }) // Add body if needed
+        };
+
+        // Clear the previous timeout if it exists
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+
+        timeoutRef.current = setTimeout(() => {
+            // API call to update category name in the backend
+            // const categoryToUpdate: Category | undefined = categories.find(cat => cat.frontendId === id);
+
+            // Send API request after the delay
+            // Include name and frontendId in the request body
+
+            fetch(httpUpdateCategoryUrl, httpUpdateCategoryBody)
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Category updated successfully on the server');
+                        return response.json();
+                    } else {
+                        throw new Error('Server response was not OK');
+                    }
+                })
+                .then(data => {
+                    console.log('Updated category data:', data);
+
+                    // Update applications with new category name
+                    setApplications(prevApps => prevApps.map(app => app.frontendId === id ? { ...app, categoryName: e.target.value } : app));
+
+                })
+                .catch((error) => {
+                    console.error('Error updating category:', error);
+                });
+        }, delay);
     }
 
     function handleApplicationBtnClick(e: React.MouseEvent<HTMLButtonElement>, categoryId: string, categoryName: string): void {
@@ -131,10 +189,10 @@ function CategorySection({ loginStatus }: CategorySectionProps): JSX.Element {
         // Create unique ID for frontend
         formData.frontendId = uuidv4();
 
-        const categoryToSubmit: Category | undefined = categories.find(cat => cat.name === formData.categoryName);
+        const categoryToSubmit: Category | undefined = categories.find(cat => cat.frontendId === formData.categoryFrontendId);
 
         // Update API
-        const fetchURL: string = 'http://localhost:3005/api/applications';
+        const fetchURL: string = backendUrl + '/applications';
         fetch(fetchURL, {
             method: 'POST',
             credentials: 'include',
@@ -162,9 +220,43 @@ function CategorySection({ loginStatus }: CategorySectionProps): JSX.Element {
 
     }
 
+    function handleDelete(app: Application, e: React.MouseEvent<HTMLButtonElement>): void {
+        console.log("Delete button clicked", e.target);
+
+        // Update API
+        const fetchURL: string = backendUrl + '/application' + '/' + app.frontendId;
+        fetch(fetchURL, {
+            method: 'DELETE',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ application: app })
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Application deleted successfully');
+                    // Set Application state
+                    setApplications(prevApps => prevApps.filter(a => a.frontendId !== app.frontendId));
+                    return response.json();
+                } else {
+                    throw new Error('Server response was not OK');
+                }
+            })
+            .then(data => {
+                console.log('Deleted application data:', data);
+                if (data.length === 0) {
+                    setCategories(prevCategories => prevCategories.filter(cat => cat.name !== app.categoryName));
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            })
+    }
+
     return (
         <section className={categorySectionClass}>
-            <CategoryBtn handleBtnClick={handleCategoryBtnClick} />
+            {(loading && <p>Loading...</p>)}
+            {error && <p>Error: {error}</p>}
+            {loading ? null : <CategoryBtn handleBtnClick={handleCategoryBtnClick} />}
             {categories.map((category: Category) => (
                 <div key={category.frontendId} className={categoryItemClass}>
                     <div className={categoryDivClass}>
@@ -173,11 +265,12 @@ function CategorySection({ loginStatus }: CategorySectionProps): JSX.Element {
                     </div>
                     <div>
                         {showApplicationForm.filter(form => form.show && form.categoryId === category.frontendId).map((form, index) => (
-                            <ApplicationForm key={index} handleSubmit={handleApplicationFormSubmit} categoryName={category.name} />
+                            <ApplicationForm key={index} handleSubmit={handleApplicationFormSubmit} categoryName={category.name} categoryFrontendId={category.frontendId} />
                         ))}
-                        {applications.filter(app => app.categoryName === category.name).map((app, index) => (
-                            <div key={index}>
-                                <p>{app.jobTitle} - {app.companyName} - {app.status} on {app.applicationDate}</p>
+                        {applications.filter(app => app.categoryName === category.name).map((app, index) =>
+                        (
+                            <div key={index} className={ApplicationContainerClass}>
+                                <p>{app.jobTitle} - {app.companyName} - {app.status} on {app.applicationDate}</p> <button className={DeleteBtn} onClick={(e) => handleDelete(app, e)}>Delete</button>
                             </div>
                         ))}
                     </div>

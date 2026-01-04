@@ -13,11 +13,13 @@ type Application = {
     applicationDate: string;
     status: string;
     categoryName: string;
+    categoryFrontendId: string;
 };
 
 type ApplicationFormProps = {
     handleSubmit: (e: React.FormEvent<HTMLFormElement>, formData: Application) => void,
     categoryName: string;
+    categoryFrontendId: string;
 };
 
 /****************************************************************************
@@ -37,14 +39,15 @@ const initialFormData: Application = {
     companyName: '',
     applicationDate: '',
     status: '',
-    categoryName: ""
+    categoryName: "",
+    categoryFrontendId: ""
 }
 
 
 /****************************************************************************
  * **************              Component             ************************
  * ****************************************************************************/
-function ApplicationForm({ handleSubmit, categoryName }: ApplicationFormProps): JSX.Element {
+function ApplicationForm({ handleSubmit, categoryName, categoryFrontendId }: ApplicationFormProps): JSX.Element {
 
     const [formData, setFormData] = useState(initialFormData);
 
@@ -54,6 +57,7 @@ function ApplicationForm({ handleSubmit, categoryName }: ApplicationFormProps): 
         setFormData(prevData => ({
             ...prevData,
             categoryName: categoryName,
+            categoryFrontendId: categoryFrontendId,
             [name]: value
         }));
     }
