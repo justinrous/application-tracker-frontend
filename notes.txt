@@ -1,6 +1,12 @@
 
 Portfolio Tracker
 
+System Design
+- Build full CRUD application w responsive design
+- Integrate Docker
+- Deploy Backend to AWS (Beanstalk, EC2, etc. )
+- Deploy Frontend to AWS (S3, Amplify, EC2)
+
 To-Do:
 - Write Unit Tests
 - Implement CRUD
